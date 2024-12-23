@@ -1,0 +1,43 @@
+{
+  "name": "udaan-lead-management-system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test:unit": "mocha --exit",
+    "test:integration": "mocha --exit --recursive test/integration",
+    "test:api": "mocha --exit --recursive test/api",
+    "test:all": "mocha --exit --recursive test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nishant219/Udaan-KAM1.git"
+  },
+  "author": "nishant219",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nishant219/Udaan-KAM1/issues"
+  },
+  "homepage": "https://github.com/nishant219/Udaan-KAM1#readme",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.46",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.2",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "mocha": "^11.0.1",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}
