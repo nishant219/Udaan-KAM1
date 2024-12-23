@@ -7,6 +7,8 @@ logs/
 .log
 .tmp
 
+combined.log
+error.log
 
 .idea/
 .vscode/
