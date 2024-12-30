@@ -23,6 +23,14 @@ app.use('/api/v1/interactions', interactionRouter);
 app.use('/api/v1/leads', leadRouter);
 app.use('/api/v1/users', userRouter);
 
+//ping route
+app.get('/api/v1/ping', (req, res) => {
+    res.json({
+      status: 'success',
+      message: 'Server is running!'
+    });
+});
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
