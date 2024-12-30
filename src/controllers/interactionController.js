@@ -1,11 +1,11 @@
 import Interaction from "../models/Interaction.js";
 import Lead from "../models/Lead.js";
 import logger from "../config/winston.js";
-import { calculateNextCallDate } from "../utils/date.js";
+import { calculateNextCallDate } from "../utils/timezone.js";
 import LeadService from "../services/leadService.js";
 import PerformanceService from "../services/performanceService.js";
 
-exports.recordInteraction = async (req, res) => {
+export const recordInteraction = async (req, res) => {
     try {
       const { leadId } = req.params;
       const interaction = new Interaction({
@@ -35,9 +35,9 @@ exports.recordInteraction = async (req, res) => {
     }
   };
 
-exports.getKamDashboard = async (req, res) => {
+export const getKamDashboard = async (req, res) => {
     try {
-      const startDate = new Date(req.query.startDate || Date.now() - 30 * 24 * 60 * 60 * 1000);
+      const startDate = new Date(req.query.startDate || Date.now() - 30 * 24 * 60 * 60 * 1000); // 30 days ago
       const endDate = new Date(req.query.endDate || Date.now());
   
       const performance = await PerformanceService.getKamPerformance(
@@ -53,7 +53,7 @@ exports.getKamDashboard = async (req, res) => {
     }
 };  
 
-exports.getLeadInteractions = async (req, res) => {
+export const getLeadInteractions = async (req, res) => {
     try {
       const { leadId } = req.params;
       const interactions = await Interaction.find({ leadId });
@@ -71,7 +71,7 @@ exports.getLeadInteractions = async (req, res) => {
     }
   };
 
-exports.reassignLead = async (req, res) => {
+export const reassignLead = async (req, res) => {
     try {
       const { leadId } = req.params;
       const { newKamId } = req.body;

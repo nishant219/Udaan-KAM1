@@ -1,7 +1,7 @@
 import Contact from '../models/Contact.js';
 import logger from '../config/winston.js';
 
-exports.addContact = async (req, res) => {
+export const addContact = async (req, res) => {
     try {
       const { leadId } = req.params;
       const contact = new Contact({ ...req.body, leadId });
@@ -21,7 +21,7 @@ exports.addContact = async (req, res) => {
     }
   };
 
-exports.getContacts = async (req, res) => {
+export const getContacts = async (req, res) => {
     try {
         const contacts = await Contact.find({ createdBy: req.user.id });
 

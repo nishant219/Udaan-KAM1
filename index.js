@@ -6,12 +6,22 @@ dotenv.config();
 import connectDB from './src/config/database.js';
 import winston from './src/config/winston.js';
 
+import contactRouter from './src/routes/contactRoutes.js';
+import interactionRouter from './src/routes/interactionRoutes.js';
+import leadRouter from './src/routes/leadRoutes.js';
+import userRouter from './src/routes/userRoutes.js';
+
 const app=express();
 
 app.use(cors());
 app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/v1/contacts', contactRouter);
+app.use('/api/v1/interactions', interactionRouter);
+app.use('/api/v1/leads', leadRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

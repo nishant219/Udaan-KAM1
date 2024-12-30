@@ -1,6 +1,6 @@
 import Interaction from '../models/Interaction.js';
 import Lead from '../models/Lead.js';
-import { calculateNextCallDate } from '../utils/date';
+import { calculateNextCallDate } from '../utils/timezone.js';
 
 class LeadService {
     static async getPerformanceMetrics(leadId) {

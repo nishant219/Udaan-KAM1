@@ -1,11 +1,8 @@
 import moment from 'moment';
 import Interaction from '../models/Interaction.js';
 import Lead from '../models/Lead.js';
-
-
-
 class AnalyticsService {
-    static async getAccountPerformanceMetrics(leadId, timeframe = 30) {
+  static async getAccountPerformanceMetrics(leadId, timeframe = 30) {
       const endDate = new Date();
       const startDate = moment(endDate).subtract(timeframe, 'days').toDate();
   
@@ -86,7 +83,7 @@ class AnalyticsService {
       };
     }
   
-    static async getKamAnalytics(kamId, timeframe = 30) {
+  static async getKamAnalytics(kamId, timeframe = 30) {
       const endDate = new Date();
       const startDate = moment(endDate).subtract(timeframe, 'days').toDate();
   
@@ -143,4 +140,4 @@ class AnalyticsService {
     }
   }
 
-    export default AnalyticsService;
+export default AnalyticsService;

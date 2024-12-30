@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
+import User from '../models/User.js';
 import logger from '../config/winston.js';
 
 const auth = async (req, res, next)=>{

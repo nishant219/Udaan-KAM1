@@ -2,7 +2,7 @@ import Lead from '../models/Lead.js';
 import Interaction from '../models/Interaction.js';
 import logger from '../config/winston.js';
 
-exports.createLead = async (req, res) => {
+export const createLead = async (req, res) => {
     try {
       const lead = new Lead({
         ...req.body,
@@ -26,7 +26,7 @@ exports.createLead = async (req, res) => {
     }
   };
   
-exports.getTodayCalls = async (req, res) => {
+export const getTodayCalls = async (req, res) => {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -54,7 +54,7 @@ exports.getTodayCalls = async (req, res) => {
     }
   };
   
-  exports.updateLeadStatus = async (req, res) => {
+export const updateLeadStatus = async (req, res) => {
     try {
       const { leadId } = req.params;
       const { status, notes } = req.body;
@@ -93,7 +93,7 @@ exports.getTodayCalls = async (req, res) => {
     }
   };
 
-exports.calculateNextCallDate = (callFrequency, timezone) => {
+export const calculateNextCallDate = (callFrequency, timezone) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
   
@@ -107,7 +107,7 @@ exports.calculateNextCallDate = (callFrequency, timezone) => {
     return nextCallDate;
   };
     
-exports.getLeads = async (req, res) => {
+export const getLeads = async (req, res) => {
     try {
       const leads = await Lead.find({ assignedKam: req.user.id });
   
@@ -124,7 +124,7 @@ exports.getLeads = async (req, res) => {
     }
   };
 
-exports.getLead = async (req, res) => {
+export const getLead = async (req, res) => {
     try {
       const { leadId } = req.params;
   
@@ -148,6 +148,32 @@ exports.getLead = async (req, res) => {
         message: 'Failed to fetch lead'
       });
     }
-  };
+};
+
+export const deleteLead = async (req, res) => {
+  try {
+    const { leadId } = req.params;
+
+    const result = await Lead.findOneAndDelete({ _id: leadId, assignedKam: req.user.id });
+
+    if (!result) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Lead not found',
+      });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Lead deleted successfully',
+    });
+  } catch (error) {
+    logger.error('Delete lead error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to delete lead',
+    });
+  }
+};
 
 
