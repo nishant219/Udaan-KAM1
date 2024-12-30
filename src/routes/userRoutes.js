@@ -12,8 +12,7 @@ import auth from '../middleware/auth.js';
 
 const userRouter = Router();
 
-
-userRouter.post('/', auth, createUser); 
+userRouter.post('/', createUser); 
 userRouter.post('/login', login);
 userRouter.patch('/:id', auth, updateUser);
 userRouter.get('/:id', auth, getUserProfile);

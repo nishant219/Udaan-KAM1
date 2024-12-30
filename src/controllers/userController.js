@@ -1,7 +1,8 @@
-import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 import logger from '../config/winston.js';
 import { transferLeadsToNewKam, getUserStats } from '../services/userService.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export const createUser = async (req, res) => {
     try {
@@ -10,7 +11,7 @@ export const createUser = async (req, res) => {
         // Check if user exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            logger.error('User creation failed: Email already exists');
+            logger.error(`User creation failed: Email ${email} already exists`);
             return res.status(400).json({ error: 'Email already exists' });
         }
 
@@ -33,7 +34,7 @@ export const createUser = async (req, res) => {
             user: userResponse 
         });
     } catch (error) {
-        logger.error('User creation error:', error.message);
+        logger.error(error.message);
         return res.status(500).json({ error: 'Error creating user' });
     }
 };

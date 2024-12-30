@@ -2,12 +2,25 @@ import Lead from '../models/Lead.js';
 import Interaction from '../models/Interaction.js';
 import logger from '../config/winston.js';
 
+const FREQUENCY_TO_DAYS = {
+  'DAILY': 1,
+  'WEEKLY': 7,
+  'BIWEEKLY': 14,
+  'MONTHLY': 30
+};
+
+
 export const createLead = async (req, res) => {
     try {
+      console.log(req.body.callFrequency);
+      console.log(req.user.timezone);
+      const nextCallDate = calculateNextCallDate(req.body.callFrequency, req.user.timezone);
+    
       const lead = new Lead({
         ...req.body,
         assignedKam: req.user.id,
-        nextCallDate: calculateNextCallDate(req.body.callFrequency, req.user.timezone)
+        nextCallDate,
+        lastCallDate: new Date() // Initialize lastCallDate to current date
       });
   
       await lead.save();
@@ -72,13 +85,13 @@ export const updateLeadStatus = async (req, res) => {
         });
       }
   
-      // Record status change interaction
-      await new Interaction({
-        leadId,
-        type: 'STATUS_CHANGE',
-        notes,
-        kamId: req.user.id
-      }).save();
+      const interaction = new Interaction({
+        lead: leadId,
+        status,
+        notes
+      });
+
+      await interaction.save();
   
       res.json({
         status: 'success',
@@ -93,16 +106,10 @@ export const updateLeadStatus = async (req, res) => {
     }
   };
 
-export const calculateNextCallDate = (callFrequency, timezone) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-  
-    const nextCallDate = new Date(today);
-    nextCallDate.setDate(nextCallDate.getDate() + callFrequency);
-  
-    // Adjust for timezone
-    const offset = today.getTimezoneOffset() - timezone * 60;
-    nextCallDate.setMinutes(nextCallDate.getMinutes() + offset);
+export  const calculateNextCallDate = (callFrequency, timezone) => {
+    const days = FREQUENCY_TO_DAYS[callFrequency];
+    const nextCallDate = new Date();
+    nextCallDate.setDate(nextCallDate.getDate() + days);
   
     return nextCallDate;
   };
